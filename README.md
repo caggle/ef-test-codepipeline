@@ -1,3 +1,3 @@
 Serverless aws to mozdef event framework
 
-To be used as a template for external event sources.
+This is a work in progess which will eventually be used as a template for external event sources.
