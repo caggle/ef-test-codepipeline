@@ -1,0 +1,637 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ZoomEventInputModel",
+    "type": "object",
+    "properties": {
+      "RequestBody": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "account_id": {
+                "type": "string"
+              },
+              "operator": {
+                "type": "string"
+              },
+              "object": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "account_name": {
+                    "type": "string"
+                  },
+                  "account_alias": {
+                    "type": "string"
+                  },
+                  "account_support_name": {
+                    "type": "string"
+                  },
+                  "account_support_email": {
+                    "type": "string"
+                  },
+                  "managed_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "phone_number": {
+                    "type": "string"
+                  },
+                  "phone_country": {
+                    "type": "string"
+                  },
+                  "room_name": {
+                    "type": "string"
+                  },
+                  "calendar_name": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "pmi": {
+                    "type": "string"
+                  },
+                  "use_pmi": {
+                    "type": "string"
+                  },
+                  "pic_url": {
+                    "type": "string"
+                  },
+                  "vanity_name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "host_id": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "start_time": {
+                    "type": "string"
+                  },
+                  "timezone": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string"
+                  },
+                  "host_key": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "dept": {
+                    "type": "string"
+                  },
+                  "duration": {
+                    "type": "string"
+                  },
+                  "issue": {
+                    "type": "string"
+                  },
+                  "issues": {
+                    "type": "string"
+                  },
+                  "occurrences": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "occurrence_id": {
+                          "type": "string"
+                        },
+                        "start_time": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "owner_id": {
+                    "type": "string"
+                  },
+                  "owner_email": {
+                    "type": "string"
+                  },
+                  "participant": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "user_name": {
+                        "type": "string"
+                      },
+                      "join_time": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "registrant": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "zip": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "industry": {
+                        "type": "string"
+                      },
+                      "org": {
+                        "type": "string"
+                      },
+                      "job_title": {
+                        "type": "string"
+                      },
+                      "purchasing_time_frame": {
+                        "type": "string"
+                      },
+                      "role_in_purchase_process": {
+                        "type": "string"
+                      },
+                      "no_of_employees": {
+                        "type": "string"
+                      },
+                      "comments": {
+                        "type": "string"
+                      },
+                      "custom_questions": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "join_url": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "schedule_meting": {
+                        "type": "object",
+                        "properties": {
+                          "host_video": {
+                            "type": "string"
+                          },
+                          "participant_video": {
+                            "type": "string"
+                          },
+                          "audio_type": {
+                            "type": "string"
+                          },
+                          "join_before_host": {
+                            "type": "string"
+                          },
+                          "enforce_login": {
+                            "type": "string"
+                          },
+                          "enforce_login_with_domains": {
+                            "type": "string"
+                          },
+                          "enforce_login_domains": {
+                            "type": "string"
+                          },
+                          "not_store_meeting_topic": {
+                            "type": "string"
+                          },
+                          "force_pmi_jbh_password": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "in_meeting": {
+                        "type": "object",
+                        "properties": {
+                          "e2e_encryption": {
+                            "type": "string"
+                          },
+                          "chat": {
+                            "type": "string"
+                          },
+                          "private_chat": {
+                            "type": "string"
+                          },
+                          "auto_saving_chat": {
+                            "type": "string"
+                          },
+                          "file_transfer": {
+                            "type": "string"
+                          },
+                          "feedback": {
+                            "type": "string"
+                          },
+                          "post_meeting_feedback": {
+                            "type": "string"
+                          },
+                          "co_host": {
+                            "type": "string"
+                          },
+                          "polling": {
+                            "type": "string"
+                          },
+                          "attendee_on_hold": {
+                            "type": "string"
+                          },
+                          "show_meeting_control_toolbar": {
+                            "type": "string"
+                          },
+                          "allow_show_zoom_windows": {
+                            "type": "string"
+                          },
+                          "annotation": {
+                            "type": "string"
+                          },
+                          "whiteboard": {
+                            "type": "string"
+                          },
+                          "webinar_question_answer": {
+                            "type": "string"
+                          },
+                          "anonymous_question_answer": {
+                            "type": "string"
+                          },
+                          "breakout_room": {
+                            "type": "string"
+                          },
+                          "closed_caption": {
+                            "type": "string"
+                          },
+                          "far_end_camera_control": {
+                            "type": "string"
+                          },
+                          "group_hd": {
+                            "type": "string"
+                          },
+                          "virtual_background": {
+                            "type": "string"
+                          },
+                          "watermark": {
+                            "type": "string"
+                          },
+                          "alert_guest_join": {
+                            "type": "string"
+                          },
+                          "auto_answer": {
+                            "type": "string"
+                          },
+                          "p2p_connetion": {
+                            "type": "string"
+                          },
+                          "p2p_ports": {
+                            "type": "string"
+                          },
+                          "ports_range": {
+                            "type": "string"
+                          },
+                          "sending_default_email_invites": {
+                            "type": "string"
+                          },
+                          "use_html_format_email": {
+                            "type": "string"
+                          },
+                          "dscp_marking": {
+                            "type": "string"
+                          },
+                          "dscp_audio": {
+                            "type": "string"
+                          },
+                          "dscp_video": {
+                            "type": "string"
+                          },
+                          "stereo_audio": {
+                            "type": "string"
+                          },
+                          "original_audio": {
+                            "type": "string"
+                          },
+                          "screen_sharing": {
+                            "type": "string"
+                          },
+                          "remote_control": {
+                            "type": "string"
+                          },
+                          "attention_tracking": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "email_notification": {
+                        "type": "object",
+                        "properties": {
+                          "cloud_recording_avaliable_reminder": {
+                            "type": "string"
+                          },
+                          "jbh_reminder": {
+                            "type": "string"
+                          },
+                          "cancel_meeting_reminder": {
+                            "type": "string"
+                          },
+                          "low_host_count_reminder": {
+                            "type": "string"
+                          },
+                          "alternative_host_reminder": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "zoom_rooms": {
+                        "type": "object",
+                        "properties": {
+                          "upcoming_meeting_alert": {
+                            "type": "string"
+                          },
+                          "start_airplay_manually": {
+                            "type": "string"
+                          },
+                          "weekly_system_restart": {
+                            "type": "string"
+                          },
+                          "list_meetings_with_calendar": {
+                            "type": "string"
+                          },
+                          "zr_post_meeting_feedback": {
+                            "type": "string"
+                          },
+                          "ultrasonic": {
+                            "type": "string"
+                          },
+                          "force_private_meeting": {
+                            "type": "string"
+                          },
+                          "hide_host_information": {
+                            "type": "string"
+                          },
+                          "cmr_for_instant_meeting": {
+                            "type": "string"
+                          },
+                          "auto_start_stop_scheduled_meetings": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "security": {
+                        "type": "object",
+                        "properties": {
+                          "admin_change_name_pic": {
+                            "type": "string"
+                          },
+                          "import_photos_from_devices": {
+                            "type": "string"
+                          },
+                          "hide_billing_info": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "recording": {
+                        "type": "object",
+                        "properties": {
+                          "local_recording": {
+                            "type": "string"
+                          },
+                          "cloud_recording": {
+                            "type": "string"
+                          },
+                          "record_speaker_view": {
+                            "type": "string"
+                          },
+                          "record_gallery_view": {
+                            "type": "string"
+                          },
+                          "record_audio_file": {
+                            "type": "string"
+                          },
+                          "save_chat_text": {
+                            "type": "string"
+                          },
+                          "show_timestamp": {
+                            "type": "string"
+                          },
+                          "recording_audio_transcript": {
+                            "type": "string"
+                          },
+                          "auto_recording": {
+                            "type": "string"
+                          },
+                          "cloud_recording_download": {
+                            "type": "string"
+                          },
+                          "cloud_recording_download_host": {
+                            "type": "string"
+                          },
+                          "account_user_access_recording": {
+                            "type": "string"
+                          },
+                          "auto_delete_cmr": {
+                            "type": "string"
+                          },
+                          "auto_delete_cmr_days": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "telephony": {
+                        "type": "object",
+                        "properties": {
+                          "third_party_audio": {
+                            "type": "string"
+                          },
+                          "audio_conference_info": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "integration": {
+                        "type": "object",
+                        "properties": {
+                          "google_calendar": {
+                            "type": "string"
+                          },
+                          "google_drive": {
+                            "type": "string"
+                          },
+                          "dropbox": {
+                            "type": "string"
+                          },
+                          "box": {
+                            "type": "string"
+                          },
+                          "microsoft_one_drive": {
+                            "type": "string"
+                          },
+                          "kubi": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "feature": {
+                        "type": "object",
+                        "properties": {
+                          "meeting_capacity": {
+                            "type": "string"
+                          },
+                          "large_meeting": {
+                            "type": "string"
+                          },
+                          "large_meeting_capacity": {
+                            "type": "string"
+                          },
+                          "webinar": {
+                            "type": "string"
+                          },
+                          "webinar_capacity": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "share_url": {
+                    "type": "string"
+                  },
+                  "total_size": {
+                    "type": "string"
+                  },
+                  "recording_count": {
+                    "type": "string"
+                  },
+                  "recording_file": {
+                    "type": "object",
+                    "properties": {
+                      "recording_start": {
+                        "type": "string"
+                      },
+                      "recording_end": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "recording_files": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "meeting_id": {
+                          "type": "string"
+                        },
+                        "recording_start": {
+                          "type": "string"
+                        },
+                        "recording_end": {
+                          "type": "string"
+                        },
+                        "file_type": {
+                          "type": "string"
+                        },
+                        "file_size": {
+                          "type": "string"
+                        },
+                        "play_url": {
+                          "type": "string"
+                        },
+                        "download_url": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "recording_type": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "old_object": {
+                "type": "object",
+                "properties": {
+                  "$changed_category": {
+                    "type": "object",
+                    "properties": {
+                      "$changed_field_name": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "$changed_field_name": {
+                    "type": "string"
+                  }
+                }
+              },
+              "operation": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
