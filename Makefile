@@ -1,7 +1,8 @@
 ROOT_DIR	:= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 AWS_REGION	:= 
 AWS_PROFILE := 
-CUSTOM_DOMAIN := 
+
+ZOOM_TOKEN = ${ZTOKEN}
 
 all:
 	@echo 'Available make targets:'
@@ -9,8 +10,14 @@ all:
 
 .SILENT: setup
 .PHONY: setup
-
-
+ifneq ($(ZOOM_TOKEN), )
+  setup:
+	export AWS_SDK_LOAD_CONFIG=true && \
+	aws --profile $(AWS_PROFILE) ssm put-parameter --name "ZOOM_AUTH_TOKEN" \
+	--value $(ZOOM_TOKEN) --type SecureString --overwrite
+else
+  $(error Zoom token is not specified)
+endif
 
 .PHONY: validate
 validate: export AWS_SDK_LOAD_CONFIG=true
@@ -27,16 +34,12 @@ deploy:
 	npm install serverless-domain-manager --save-dev
 	sls deploy --region $(AWS_REGION) --aws-profile $(AWS_PROFILE)
 
-.PHONY: test
-test:
-	python -m pytest tests/
 
 .PHONY: flake8
 flake8:
 	flake8 ./*py
-	flake8 lib/*py
-	flake8 scanners/*py
-	flake8 examples/*py
+	flake8 handlers/*py
+	flake8 core/*py
 	flake8 tests/*py
 
 .PHONY: clean
