@@ -15,8 +15,6 @@ ifneq ($(ZOOM_TOKEN), )
 	export AWS_SDK_LOAD_CONFIG=true && \
 	aws --profile $(AWS_PROFILE) ssm put-parameter --name "ZOOM_AUTH_TOKEN" \
 	--value $(ZOOM_TOKEN) --type SecureString --overwrite
-else
-  $(error Zoom token is not specified)
 endif
 
 .PHONY: validate
@@ -31,7 +29,6 @@ deploy:
 	npm install serverless-python-requirements --save-dev && \
 	npm install serverless-pseudo-parameters --save-dev && \
 	npm install serverless-prune-plugin --save-dev && \
-	npm install serverless-domain-manager --save-dev
 	sls deploy --region $(AWS_REGION) --aws-profile $(AWS_PROFILE)
 
 

@@ -1,5 +1,6 @@
 
-service: ${ssm:resource_name} # NOTE: update this with your service name
+# What should we call this service?
+service: mozdef-event-framework
 #app: your-app-name
 #tenant: your-tenant-name
 
@@ -10,7 +11,6 @@ service: ${ssm:resource_name} # NOTE: update this with your service name
 provider:
   name: aws
   runtime: python3.7
-# you can overwrite defaults here
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-west-2'}
   endpointType: REGIONAL
@@ -34,16 +34,18 @@ provider:
         - ssm:GetParameter
       Resource:
         - arn:aws:ssm:us-west-2:#{AWS::AccountId}:parameter/auth_token
-    - Effect: Allow
-      Action: kms:Decrypt
-      Resource:
-        - arn:aws:kms:#{AWS::Region}:#{AWS::AccountId}:key/${self:custom.cfg.kms}
+    # We will add this when we store the token in SSM using KMS  
+    # - Effect: Allow
+    #   Action: kms:Decrypt
+    #   Resource:
+    #     - arn:aws:kms:#{AWS::Region}:#{AWS::AccountId}:key/${self:custom.cfg.kms}
 
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
 
 package:
+  # This is to keep the package to be uploaded as small as possible in size
   exclude:
     - .venv/**
     - .virtualenv/**
@@ -133,10 +135,18 @@ resources:
         QueueName: ${self:custom.cfg.resource_name}-dead-letter-queue
         MessageRetentionPeriod: 1209600
 
+# We will eventually need all these plugins, so adding them here
+plugins:
+  - serverless-python-requirements
+  - serverless-pseudo-parameters
+  - serverless-prune-plugin
+
 custom:
   cfg:
     resource_name: MozDef
-    api_method: 
-    api_path: 
-    kms:
+    # These are not final values
+    api_method: POST
+    api_path: zoom
+    # kms:          # We will only need this if we choose to a custom KMS other than AWS default
+    # ssmZoomToken: ZOOM_AUTH_TOKEN
     project: MozDef
