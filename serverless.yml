@@ -22,6 +22,7 @@ service: ${ssm:resource_name} # NOTE: update this with your service name
 provider:
   name: aws
   runtime: python3.7
+
 # you can overwrite defaults here
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-west-2'}
@@ -33,9 +34,6 @@ provider:
     Project: ${self:custom.cfg.project}
   stackName: ${self:custom.cfg.resource_name}-${self:provider.stage}
   apiName: ${self:custom.cfg.resource_name}-eventframework-${self:provider.stage}
-  # Adding this to here in case we would like to have environment 
-  # variables that are globally available
-  environment:
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -75,19 +73,13 @@ provider:
 #    variable1: value1
 
 # you can add packaging information here
-package:
-  exclude:
-    - .venv/**
-    - .virtualenv/**
-    - .git/**
-    - __pycache__/**
-    - node_modules/**
-    - ./Makefile
-    - .vscode
-    - tests/**
+#package:
 #  include:
 #    - include-me.py
 #    - include-me-dir/**
+#  exclude:
+#    - exclude-me.py
+#    - exclude-me-dir/**
 
 functions:
   eventframework:
@@ -179,7 +171,7 @@ resources:
 
 custom:
   cfg:
-    resource_name: MozDefQueue
+    resource_name: 
     api_method: 
     api_path: 
     kms:
