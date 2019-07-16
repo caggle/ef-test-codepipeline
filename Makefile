@@ -13,7 +13,7 @@ all:
 ifneq ($(ZOOM_TOKEN), )
   setup:
 	export AWS_SDK_LOAD_CONFIG=true && \
-	aws --profile $(AWS_PROFILE) ssm put-parameter --name "ZOOM_AUTH_TOKEN" \
+	aws --profile $(AWS_PROFILE) ssm put-parameter --name "/mozdef-event-framework/ZOOM_AUTH_TOKEN" \
 	--value $(ZOOM_TOKEN) --type SecureString --overwrite
 endif
 

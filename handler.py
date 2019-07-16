@@ -3,15 +3,17 @@ import json
 import logging
 import os
 
-sqs = boto3.resource('sqs')
-token = os.environ['auth_token']
-logger = logging.getLogger()
+REGION = os.getenv('REGION', 'us-west-2')
+sqs = boto3.client('sqs', region_name=REGION)
+ssm = boto3.client('ssm', region_name=REGION)
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
 # The following code is incomplete, and only serves as a proof of concept.
 def lambda_handler(event, context):
     if 'requestHeaders' in event:
+        token = getZoomToken()
         if event['requestHeaders']['Authorization'] != token:
             return {
                 'statusCode': 403,
@@ -65,3 +67,13 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Event received')
     }
+
+
+def getZoomToken(self):
+    try:
+        logger.info("Obtaining Zoom auth token from SSM.")
+        response = ssm.get_parameter(Name="/mozdef-event-framework/ZOOM_AUTH_TOKEN", WithDecryption=True)
+        zoom_token = response['Parameter']['Value']
+        return zoom_token
+    except Exception as e:
+        logger.error("A problem occurred while accessing SSM, exception:{}".format(e.value))
