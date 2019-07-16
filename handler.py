@@ -12,71 +12,52 @@ logger.setLevel(logging.INFO)
 
 # The following code is incomplete, and only serves as a proof of concept.
 def lambda_handler(event, context):
-    if 'headers' in event:
-        token = getZoomToken()
-        if event['headers']['Authorization'] != token:
-            return {
-                'statusCode': 403,
-                'body': json.dumps('Access is Denied')
-            }
-    else:
+    token = getZoomToken()
+    if event['headers']['Authorization'] != token:
         return {
             'statusCode': 403,
             'body': json.dumps('Access is Denied')
         }
-
     if 'body' in event:
         returnDict = dict()
         returnDict['details'] = {}
-        returnDict['details']['participant'] = {}
-        if 'payload' in event['body']:
-            if 'account_id' in event['body']['payload']:
-                returnDict['details']['account_id'] = event['body']['payload']['account_id']
-            if 'user_id' in event['body']['payload']['object']['participant']:
-                returnDict['details']['uid'] = event['body']['payload']['object']['participant']['user_id']
-            if 'user_name' in event['body']['payload']['object']['participant']:
-                returnDict['details']['participant']['username'] = event['body']['payload']['object']['participant']['user_name']
-            if 'join_time' in event['body']['payload']['object']['participant']:
-                returnDict['details']['participant']['join_time'] = event['body']['payload']['object']['participant']['join_time']
-            if 'id' in event['body']['payload']['object']['participant'] and 'id' is not None:
-                returnDict['details']['participant']['id'] = event['body']['payload']['object']['participant']['id']
-            if 'duration' in event['body']['payload']['object']:
-                returnDict['details']['duration'] = event['body']['payload']['object']['duration']
-            if 'start_time' in event['body']['payload']['object']:
-                returnDict['details']['start_time'] = event['body']['payload']['object']['start_time']
-            if 'timezone' in event['body']['payload']['object']:
-                returnDict['details']['timezone'] = event['body']['payload']['object']['timezone']
-            if 'id' in event['body']['payload']['object']:
-                returnDict['details']['meetingid'] = event['body']['payload']['object']['id']
-            if 'uuid' in event['body']['payload']['object']:
-                returnDict['details']['uuid'] = event['body']['payload']['object']['uuid']
-            if 'host_id' in event['body']['payload']['object']:
-                returnDict['details']['hostid'] = event['body']['payload']['object']['host_id']
-            if 'type' in event['body']['payload']['object']:
-                returnDict['details']['meeting_type'] = event['body']['payload']['object']['type']
-            if 'monitorTime' in event:
-                returnDict['details']['timestamp'] = event['monitorTime']
-        if 'event' in event['body']:
-            returnDict['summary'] = event['body']['event']
-            returnDict['source'] = 'zoom_api_aws_lambda'
-            returnDict['category'] = 'zoom'
-            returnDict['eventsource'] = 'zoom_api'
-            returnDict['hostname'] = 'marketplace.zoom.us'
-            returnDict['tags'] = 'zoom'
-            returnDict['processname'] = 'zoomconnect'
-            returnDict['processid'] = 'none'
-            returnDict['severity'] = 'INFO'
+        zoom_event = json.loads(event['body'])
+        if 'event' not in zoom_event or 'payload' not in zoom_event:
+            return {
+                'statusCode': 400,
+                'body': json.dumps('Bad Request')
+            }
+
+        returnDict['summary'] = zoom_event['event']
+        returnDict['source'] = 'zoom_api_aws_lambda'
+        returnDict['category'] = 'zoom'
+        returnDict['eventsource'] = 'zoom_api'
+        returnDict['hostname'] = 'marketplace.zoom.us'
+        returnDict['tags'] = 'zoom'
+        returnDict['processname'] = 'zoomconnect'
+        returnDict['processid'] = 'none'
+        returnDict['severity'] = 'INFO'
+
+        if 'payload' in zoom_event:
+            if 'account_id' in zoom_event['payload']:
+                returnDict['details']['account_id'] = zoom_event['payload']['account_id']
+            if 'operator' in zoom_event['payload']:
+                returnDict['details']['operator'] = zoom_event['payload']['operator']
+            if 'operator_id' in zoom_event['payload']:
+                returnDict['details']['operator_id'] = zoom_event['payload']['operator_id']
+            if 'object' in zoom_event['payload']:
+                if 'id' in zoom_event['payload']['object']:
+                    returnDict['details']['id'] = zoom_event['payload']['object']['id']
+                if 'owner_id' in zoom_event['payload']['object']:
+                    returnDict['details']['owner_id'] = zoom_event['payload']['object']['owner_id']
+                if 'owner_email' in zoom_event['payload']['object']:
+                    returnDict['details']['owner_email'] = zoom_event['payload']['object']['owner_email']
 
         queueURL = os.getenv('SQS_URL')   # Obtaining the queue as environment variable
-        response = sqs.send_message(QueueUrl=queueURL, queueMessageBody=json.dumps(returnDict))
+        sqs.send_message(QueueUrl=queueURL, MessageBody=json.dumps(returnDict))
         return {
             'statusCode': 200,
             'body': json.dumps('Event received')
-        }
-    else:
-        return {
-            'statusCode': 400,
-            'body': json.dumps('Bad Request')
         }
 
 
