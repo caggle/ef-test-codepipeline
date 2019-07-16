@@ -1,0 +1,13 @@
+{
+  "event": "account.created",
+  "payload": {
+    "account_id": "lq8KK_EoRCq6ByEyA73qCA",
+    "operator": "youramazingemailhere@somemail.com",
+    "operator_id": "uLohghhRgfgrbTayCX6r2Q_qQsQ",
+    "object": {
+      "id": "aIxE1yiRR8WghhUIO6eu9L",
+      "owner_id": "e2ZHO5RSGqyfrmFnElxw",
+      "owner_email": "thesubaccountemail@somemail.com"
+    }
+  }
+}
