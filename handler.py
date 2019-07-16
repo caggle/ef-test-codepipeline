@@ -6,74 +6,86 @@ import os
 REGION = os.getenv('REGION', 'us-west-2')
 sqs = boto3.client('sqs', region_name=REGION)
 ssm = boto3.client('ssm', region_name=REGION)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
 # The following code is incomplete, and only serves as a proof of concept.
 def lambda_handler(event, context):
-    if 'requestHeaders' in event:
+    if 'headers' in event:
         token = getZoomToken()
-        if event['requestHeaders']['Authorization'] != token:
+        if event['headers']['Authorization'] != token:
             return {
                 'statusCode': 403,
                 'body': json.dumps('Access is Denied')
             }
-    if 'requestBody' in event:
+    else:
+        return {
+            'statusCode': 403,
+            'body': json.dumps('Access is Denied')
+        }
+
+    if 'body' in event:
         returnDict = dict()
         returnDict['details'] = {}
         returnDict['details']['participant'] = {}
-        if 'payload' in event['requestBody']:
-            if 'account_id' in event['requestBody']['payload']:
-                returnDict['details']['account_id'] = event['requestBody']['payload']['account_id']
-            if 'user_id' in event['requestBody']['payload']['object']['participant']:
-                returnDict['details']['uid'] = event['requestBody']['payload']['object']['participant']['user_id']
-            if 'user_name' in event['requestBody']['payload']['object']['participant']:
-                returnDict['details']['participant']['username'] = event['requestBody']['payload']['object']['participant']['user_name']
-            if 'join_time' in event['requestBody']['payload']['object']['participant']:
-                returnDict['details']['participant']['join_time'] = event['requestBody']['payload']['object']['participant']['join_time']
-            if 'id' in event['requestBody']['payload']['object']['participant'] and 'id' is not None:
-                returnDict['details']['participant']['id'] = event['requestBody']['payload']['object']['participant']['id']
-            if 'duration' in event['requestBody']['payload']['object']:
-                returnDict['details']['duration'] = event['requestBody']['payload']['object']['duration']
-            if 'start_time' in event['requestBody']['payload']['object']:
-                returnDict['details']['start_time'] = event['requestBody']['payload']['object']['start_time']
-            if 'timezone' in event['requestBody']['payload']['object']:
-                returnDict['details']['timezone'] = event['requestBody']['payload']['object']['timezone']
-            if 'id' in event['requestBody']['payload']['object']:
-                returnDict['details']['meetingid'] = event['requestBody']['payload']['object']['id']
-            if 'uuid' in event['requestBody']['payload']['object']:
-                returnDict['details']['uuid'] = event['requestBody']['payload']['object']['uuid']
-            if 'host_id' in event['requestBody']['payload']['object']:
-                returnDict['details']['hostid'] = event['requestBody']['payload']['object']['host_id']
-            if 'type' in event['requestBody']['payload']['object']:
-                returnDict['details']['meeting_type'] = event['requestBody']['payload']['object']['type']
+        if 'payload' in event['body']:
+            if 'account_id' in event['body']['payload']:
+                returnDict['details']['account_id'] = event['body']['payload']['account_id']
+            if 'user_id' in event['body']['payload']['object']['participant']:
+                returnDict['details']['uid'] = event['body']['payload']['object']['participant']['user_id']
+            if 'user_name' in event['body']['payload']['object']['participant']:
+                returnDict['details']['participant']['username'] = event['body']['payload']['object']['participant']['user_name']
+            if 'join_time' in event['body']['payload']['object']['participant']:
+                returnDict['details']['participant']['join_time'] = event['body']['payload']['object']['participant']['join_time']
+            if 'id' in event['body']['payload']['object']['participant'] and 'id' is not None:
+                returnDict['details']['participant']['id'] = event['body']['payload']['object']['participant']['id']
+            if 'duration' in event['body']['payload']['object']:
+                returnDict['details']['duration'] = event['body']['payload']['object']['duration']
+            if 'start_time' in event['body']['payload']['object']:
+                returnDict['details']['start_time'] = event['body']['payload']['object']['start_time']
+            if 'timezone' in event['body']['payload']['object']:
+                returnDict['details']['timezone'] = event['body']['payload']['object']['timezone']
+            if 'id' in event['body']['payload']['object']:
+                returnDict['details']['meetingid'] = event['body']['payload']['object']['id']
+            if 'uuid' in event['body']['payload']['object']:
+                returnDict['details']['uuid'] = event['body']['payload']['object']['uuid']
+            if 'host_id' in event['body']['payload']['object']:
+                returnDict['details']['hostid'] = event['body']['payload']['object']['host_id']
+            if 'type' in event['body']['payload']['object']:
+                returnDict['details']['meeting_type'] = event['body']['payload']['object']['type']
             if 'monitorTime' in event:
                 returnDict['details']['timestamp'] = event['monitorTime']
-        if 'event' in event['requestBody']:
-            returnDict['summary'] = event['event']
-        returnDict['source'] = 'zoom_api_aws_lambda'
-        returnDict['category'] = 'zoom'
-        returnDict['eventsource'] = 'zoom_api'
-        returnDict['hostname'] = 'marketplace.zoom.us'
-        returnDict['tags'] = 'zoom'
-        returnDict['processname'] = 'zoomconnect'
-        returnDict['processid'] = 'none'
-        returnDict['severity'] = 'INFO'
+        if 'event' in event['body']:
+            returnDict['summary'] = event['body']['event']
+            returnDict['source'] = 'zoom_api_aws_lambda'
+            returnDict['category'] = 'zoom'
+            returnDict['eventsource'] = 'zoom_api'
+            returnDict['hostname'] = 'marketplace.zoom.us'
+            returnDict['tags'] = 'zoom'
+            returnDict['processname'] = 'zoomconnect'
+            returnDict['processid'] = 'none'
+            returnDict['severity'] = 'INFO'
 
-    queue = sqs.get_queue_by_name(QueueName='placeholder') # Need to add queue name to env vars or ssm parameter store
-    response = queue.send_message(MessageBody=json.dumps(returnDict))
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Event received')
-    }
+        queueURL = os.getenv('SQS_URL')   # Obtaining the queue as environment variable
+        response = sqs.send_message(QueueUrl=queueURL, queueMessageBody=json.dumps(returnDict))
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Event received')
+        }
+    else:
+        return {
+            'statusCode': 400,
+            'body': json.dumps('Bad Request')
+        }
 
 
-def getZoomToken(self):
+def getZoomToken():
     try:
         logger.info("Obtaining Zoom auth token from SSM.")
         response = ssm.get_parameter(Name="/mozdef-event-framework/ZOOM_AUTH_TOKEN", WithDecryption=True)
         zoom_token = response['Parameter']['Value']
         return zoom_token
     except Exception as e:
-        logger.error("A problem occurred while accessing SSM, exception:{}".format(e.value))
+        logger.error("A problem occurred while accessing SSM, exception: {}".format(e))
+        return False

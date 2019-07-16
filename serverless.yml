@@ -1,5 +1,3 @@
-
-# What should we call this service?
 service: mozdef-event-framework
 #app: your-app-name
 #tenant: your-tenant-name
@@ -7,7 +5,6 @@ service: mozdef-event-framework
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
-
 provider:
   name: aws
   runtime: python3.7
@@ -30,19 +27,22 @@ provider:
       Resource: arn:aws:sqs:*:*:${self:custom.cfg.resource_name}
     - Effect: Allow
       Action: 
-        - ssm:GetParameters
         - ssm:GetParameter
+        - ssm:GetParametersByPath
       Resource:
-        - "arn:#{AWS::Partition}:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${self:custom.cfg.ssmZoomToken}"
+        - "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${self:custom.cfg.ssmZoomToken}"
     - Effect: Allow
       Action: kms:Decrypt
       Resource:
         # Using default AWS SSM key in KMS here, we can change if we want at the expense of more complexity
         - "arn:aws:kms:#{AWS::Region}:#{AWS::AccountId}:key/alias/aws/ssm"
-
-# you can define service wide environment variables here
+  # You can define service wide environment variables here
   environment:
     REGION: '#{AWS::Region}'
+    # Adding resource queue URL as global environment variable
+    # We could also store this in SSM
+    SQS_URL:
+      Ref: ResourceQueue
 
 package:
   # This is to keep the package to be uploaded as small as possible in size
@@ -67,7 +67,9 @@ functions:
       - http:
           path: ${self:custom.cfg.api_path}
           method: ${self:custom.cfg.api_method}
-          async: true
+          cors: true
+          # I had to comment this out so I can get the full event data
+          # async: true
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -141,5 +143,10 @@ custom:
     # These are not final values
     api_method: POST
     api_path: zoom
-    ssmZoomToken: "/mozdef-event-framework/ZOOM_AUTH_TOKEN"
+    ssmZoomToken: mozdef-event-framework/ZOOM_AUTH_TOKEN
     project: MozDef
+  pythonRequirements:
+    dockerizePip: true
+  prune:
+    automatic: true
+    number: 5
