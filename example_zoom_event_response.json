@@ -1,0 +1,40 @@
+{
+    "applicationId": "TEST_APP_ID",
+    "monitorTime": "2019-07-02 16:19:08:790",
+    "traceId": null,
+    "accountId": "TEST_ACCOUNT_ID",
+    "event": "meeting.participant_joined",
+    "status": "502",
+    "userId": "TEST_USERID",
+    "url": "EVENT_FRAMEWORK_URL",
+    "subscriptionId": "TEST_SUB_ID",
+    "requestHeaders": {
+    	"Authorization": "111222333",
+    	"clientId": "TEST_CLIENT_ID",
+    	"Content-Type": "application/json; charset=utf-8",
+        "user-agent": "Zoom Marketplace/1.0"
+    },
+    "requestParameters": null,
+    "requestBody": {
+    	"event": "meeting.participant_joined",
+    	"payload": {
+    		"account_id": "TEST_ACCOUNT_ID",
+    		"object": {
+    			"duration": 30,
+    			"start_time": "2019-07-02T16:16:29Z",
+    			"timezone": "America/New_York",
+    			"topic": "Joe/Tushar/Kathryn - Revenue Ideas",
+    			"id": "TEST_MEETING_ID",
+    			"type": 2,
+    			"uuid": "TEST_UUID",
+    			"host_id": "TEST_HOST_ID",
+    			"participant": {
+    				"user_id": "TEST_USER_ID",
+    				"user_name": "Joe Tuckman",
+    				"id": "",
+    			    "join_time": "2019-07-02T16:19:04Z"
+    			}
+    		}
+    	}
+    }
+}
