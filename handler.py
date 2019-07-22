@@ -12,12 +12,12 @@ logger.setLevel(logging.INFO)
 
 # The following code is incomplete, and only serves as a proof of concept.
 def lambda_handler(event, context):
-    token = getZoomToken()
-    if event['headers']['Authorization'] != token:
-        return {
-            'statusCode': 403,
-            'body': json.dumps('Access is Denied')
-        }
+    # token = getZoomToken()
+    # if event['headers']['Authorization'] != token:
+    #     return {
+    #         'statusCode': 403,
+    #         'body': json.dumps('Access is Denied')
+    #     }
     if 'body' in event:
         returnDict = dict()
         returnDict['details'] = {}

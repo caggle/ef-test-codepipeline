@@ -60,6 +60,8 @@ package:
 #   - include-me-dir/**
 
 functions:
+  testAuthorizer: 
+    handler: authorizer.test
   eventframework:
     handler: handler.lambda_handler
     description: Lambda for handling webhook requests
@@ -68,6 +70,7 @@ functions:
           path: ${self:custom.cfg.api_path}
           method: ${self:custom.cfg.api_method}
           cors: true
+          authorizer: ${self:custom.authorizer.test}
           # I had to comment this out so I can get the full event data
           # async: true
 
@@ -138,6 +141,12 @@ plugins:
   - serverless-prune-plugin
 
 custom:
+  authorizer:
+    test:
+      name: testAuthorizer
+      type: token
+      identitySource: method.request.header.Authorization
+      identityValidationExpression: '.*'
   cfg:
     resource_name: ZoomConnect
     # These are not final values
