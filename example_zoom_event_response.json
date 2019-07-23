@@ -9,7 +9,7 @@
     "url": "EVENT_FRAMEWORK_URL",
     "subscriptionId": "TEST_SUB_ID",
     "requestHeaders": {
-    	"Authorization": "111222333",
+    	"Authorization": "112233445566",
     	"clientId": "TEST_CLIENT_ID",
     	"Content-Type": "application/json; charset=utf-8",
         "user-agent": "Zoom Marketplace/1.0"

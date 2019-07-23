@@ -144,6 +144,7 @@ custom:
   authorizer:
     test:
       name: testAuthorizer
+      # type: request
       type: token
       identitySource: method.request.header.Authorization
       identityValidationExpression: '.*'
