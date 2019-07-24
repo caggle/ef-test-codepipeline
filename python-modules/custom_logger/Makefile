@@ -10,6 +10,8 @@ all:
 install:
 	# Installs as egg
 	python3 setup.py install
+	# Installs via pip
+	pip3 install .
 
 .PHONY: build
 build:
@@ -23,7 +25,7 @@ flake:
 
 .PHONY: test
 test:
-	python3 -m pytest tests/
+	pytest tests/
 
 .PHONY: clean
 clean:
