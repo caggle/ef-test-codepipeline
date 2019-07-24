@@ -1,13 +1,24 @@
 {
-  "event": "account.created",
+  "requestBody": {
+  "event": "meeting.participant_joined",
   "payload": {
-    "account_id": "lq8KK_EoRCq6ByEyA73qCA",
-    "operator": "youramazingemailhere@somemail.com",
-    "operator_id": "uLohghhRgfgrbTayCX6r2Q_qQsQ",
+    "account_id": "TEST_ACCOUNT_ID",
     "object": {
-      "id": "aIxE1yiRR8WghhUIO6eu9L",
-      "owner_id": "e2ZHO5RSGqyfrmFnElxw",
-      "owner_email": "thesubaccountemail@somemail.com"
+      "duration": 30,
+      "start_time": "2019-07-02T16:16:29Z",
+      "timezone": "America/New_York",
+      "topic": "Joe/Tushar/Kathryn - Revenue Ideas",
+      "id": "TEST_MEETING_ID",
+      "type": 2,
+      "uuid": "TEST_UUID",
+      "host_id": "TEST_HOST_ID",
+      "participant": {
+        "user_id": "TEST_USER_ID",
+        "user_name": "Joe Tuckman",
+        "id": "",
+          "join_time": "2019-07-02T16:19:04Z"
+      }
     }
   }
+}
 }

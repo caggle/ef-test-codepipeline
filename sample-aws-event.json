@@ -1,4 +1,27 @@
-{'body': '{"test": "test"}',
+{'body': {
+    "requestBody": {
+    	"event": "meeting.participant_joined",
+    	"payload": {
+    		"account_id": "TEST_ACCOUNT_ID",
+    		"object": {
+    			"duration": 30,
+    			"start_time": "2019-07-02T16:16:29Z",
+    			"timezone": "America/New_York",
+    			"topic": "Joe/Tushar/Kathryn - Revenue Ideas",
+    			"id": "TEST_MEETING_ID",
+    			"type": 2,
+    			"uuid": "TEST_UUID",
+    			"host_id": "TEST_HOST_ID",
+    			"participant": {
+    				"user_id": "TEST_USER_ID",
+    				"user_name": "Joe Tuckman",
+    				"id": "",
+    			    "join_time": "2019-07-02T16:19:04Z"
+    			}
+    		}
+    	}
+    }
+},
  'headers': {'Host': 'repz84eljj.execute-api.us-west-2.amazonaws.com',
              'User-Agent': 'curl/7.54.0',
              'X-Amzn-Trace-Id': 'Root=1-5d2d5058-ea83741e8bb1812c11c49160',
