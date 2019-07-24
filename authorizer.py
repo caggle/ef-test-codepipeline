@@ -26,7 +26,7 @@ def generate_policy(principalId, effect, resource):
     return authResponse
 
 
-def getZoomToken():
+def get_zoom_token():
     try:
         logger.info("Obtaining Zoom auth token from SSM.")
         response = ssm.get_parameter(Name="/mozdef-event-framework/ZOOM_AUTH_TOKEN", WithDecryption=True)
@@ -37,26 +37,32 @@ def getZoomToken():
         return False
 
 
-def test(event, context):
+def validate_token(event, context):
     # print(json.dumps(event))
 
     if 'authorizationToken' not in event:
-        logger.error("No token, no auth!")
+        logger.error("No authorization header received, denying access.")
         return {
             'statusCode': 403,
             'body': json.dumps('Unauthorized.')
         }
     else:
         token = event['authorizationToken']
-        ssm_zoom_token = getZoomToken()
-        if str(token) == ssm_zoom_token:
-            # Correct token
-            logger.info("Correct token, you shall pass!")
+        ssm_zoom_token = get_zoom_token()
+        if not ssm_zoom_token:
+            # Unable to fetch Zoom token from SSM for some reason, return "Deny"
+            logger.error("Unable to retrieve Zoom token from SSM.")
+            deny_response = generate_policy('zoom_webhook', 'Deny', event['methodArn'])
+        elif ssm_zoom_token and str(token) == ssm_zoom_token:
+            # Correct authorization token, we should allow
+            logger.info("Correct authorization token received, passing event to handler.")
             allow_response = generate_policy('zoom_webhook', 'Allow', event['methodArn'])
             return allow_response
         else:
-            # Incorrect token
-            logger.warning("Incorrect token, thou shalt not pass!")
+            # Incorrect token received, we should deny
+            # TODO: We should implement monitoring on "Deny" events
+            # This will be done in another PR
+            logger.warning("Incorrect authorization token received, dropping event.")
             deny_response = generate_policy('zoom_webhook', 'Deny', event['methodArn'])
             return deny_response
 
