@@ -1,62 +1,30 @@
 import boto3
-import json
 import logging
 import os
+import sys
+import socket
+import custom_logger
+from . zoom_event_handler import ZoomEventHandler
 
 REGION = os.getenv('REGION', 'us-west-2')
 sqs = boto3.client('sqs', region_name=REGION)
-ssm = boto3.client('ssm', region_name=REGION)
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+
+
+def setup_logging():
+    logger = logging.getLogger()
+    for h in logger.handlers:
+        logger.removeHandler(h)
+    h = logging.StreamHandler(sys.stdout)
+    h.setFormatter(custom_logger.JsonFormatter(extra={"hostname": socket.gethostname()}))
+    logger.addHandler(h)
+    logger.setLevel(logging.INFO)
+    return logger
 
 
 def lambda_handler(event, context):
-    # This parsing can and will be improved in another PR
-    if 'requestBody' in event['body']:
-        returnDict = dict()
-        returnDict['details'] = {}
-        zoom_event = json.loads(event['body'])
-        zoom_event_body = zoom_event['requestBody']
-        if 'event' not in zoom_event_body or 'payload' not in zoom_event_body:
-            return {
-                'statusCode': 400,
-                'body': json.dumps('Bad Request')
-            }
+    logger = setup_logging()
+    logger.info("Zoom event ingestion service initialized.")
 
-        returnDict['summary'] = zoom_event_body['event']
-        returnDict['source'] = 'zoom_api_aws_lambda'
-        returnDict['category'] = 'zoom'
-        returnDict['eventsource'] = 'zoom_api'
-        returnDict['hostname'] = 'marketplace.zoom.us'
-        returnDict['tags'] = 'zoom'
-        returnDict['processname'] = 'zoomconnect'
-        returnDict['processid'] = 'none'
-        returnDict['severity'] = 'INFO'
-
-        if 'payload' in zoom_event_body:
-            if 'account_id' in zoom_event_body['payload']:
-                returnDict['details']['account_id'] = zoom_event_body['payload']['account_id']
-            if 'operator' in zoom_event_body['payload']:
-                returnDict['details']['operator'] = zoom_event_body['payload']['operator']
-            if 'operator_id' in zoom_event_body['payload']:
-                returnDict['details']['operator_id'] = zoom_event_body['payload']['operator_id']
-            if 'object' in zoom_event_body['payload']:
-                if 'id' in zoom_event_body['payload']['object']:
-                    returnDict['details']['id'] = zoom_event_body['payload']['object']['id']
-                if 'owner_id' in zoom_event_body['payload']['object']:
-                    returnDict['details']['owner_id'] = zoom_event_body['payload']['object']['owner_id']
-                if 'owner_email' in zoom_event_body['payload']['object']:
-                    returnDict['details']['owner_email'] = zoom_event_body['payload']['object']['owner_email']
-
-        queueURL = os.getenv('SQS_URL')   # Obtaining the queue as environment variable
-        sqs.send_message(QueueUrl=queueURL, MessageBody=json.dumps(returnDict))
-        return {
-            'statusCode': 200,
-            'body': json.dumps('Event received')
-        }
-    else:
-        # Not the expected Zoom request format
-        return {
-            'statusCode': 400,
-            'body': json.dumps('Bad Request')
-        }
+    zoom_event_handler = ZoomEventHandler(logger, region=REGION)
+    handler_response = zoom_event_handler.process(event, context)
+    return handler_response

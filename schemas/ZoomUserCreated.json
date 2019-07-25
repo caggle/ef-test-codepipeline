@@ -1,0 +1,46 @@
+{
+    "event": "string",
+    "payload": {
+        "account_id": "$account_id(string)",
+        "operator": "email(string)",
+        "creation_type": "string",  // create, ssoCreate, autoCreate, autoCreate2, custCreate
+        "object": {
+            "id": "string",
+            "first_name": "string",
+            "last_name": "string",
+            "email": "string",
+            "type": "integer"
+        }
+    }
+}
+
+RAW HTTP request:
+
+POST /zoom HTTP/1.1
+Content-Type: application/json; charset=utf-8
+user-agent: Zoom Marketplace/1.0
+Authorization: KCy6gK8QQBSQ20znjXLnvA
+clientId: JWuAlIXvRjKmhGnVAUVjCA
+x-zm-trackingid: Webhook_3c2e38f5e4054dbc8bb050b9139492da
+Content-Length: 312
+Host: 45.76.240.212
+Connection: Keep-Alive
+
+{
+    "event":"meeting.started",
+    "payload":
+    {
+        "account_id":"84H9fW1oTrKvNsZgQKoglQ",
+        "object":
+        {
+            "duration":0,
+            "start_time":"2019-07-25T05:51:17Z",
+            "timezone":"Australia/Sydney",
+            "topic":"Caglar Ulucenk's Personal Meeting Room",
+            "id":"4087175006",
+            "type":4,
+            "uuid":"utic3ARGTCexMUJhLB4QRQ==",
+            "host_id":"XFvTr9sFT_2zJ4EaalcT-g"
+        }
+    }
+}
