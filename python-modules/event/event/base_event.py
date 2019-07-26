@@ -3,10 +3,10 @@ import logging
 
 
 class BaseEvent(ABC):
-    def __init__(self, event=None, context=None, logger=logging.getLogger(__name__)):
+    def __init__(self, event=None, context=None, event_type="api-gw", logger=logging.getLogger(__name__)):
         self.event = event
         self.context = context
-        self.type = "api-gw"
+        self.type = event_type
         self.logger = logger
         super().__init__()
 

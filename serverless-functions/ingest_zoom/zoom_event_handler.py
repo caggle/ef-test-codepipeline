@@ -28,6 +28,10 @@ class ZoomEventHandler(object):
         self.sqs_client = sqs_client
         self.logger = logger
 
+    def send_to_mozdef(self, zoom_event):
+        queueURL = os.getenv('SQS_URL')   # Obtaining the queue as environment variable
+        sqs.send_message(QueueUrl=queueURL, MessageBody=json.dumps(zoom_event))
+
     def process(self, event, context):
         failed = False
         root_event = AWSEvent(event, context, self.logger)
@@ -37,7 +41,7 @@ class ZoomEventHandler(object):
             # Add to DLQ here?
             return Response({
                     'statusCode': 400,
-                    'body': json.dumps({'error': 'Bad Request'})
+                    'body': json.dumps({'Bad Request'})
                 }).with_security_headers()
         else:
             if 'event' not in zoom_data or 'payload' not in zoom_data:
@@ -45,7 +49,7 @@ class ZoomEventHandler(object):
                 # Add to DLQ here?
                 return Response({
                     'statusCode': 400,
-                    'body': json.dumps({'error': 'Bad Request'})
+                    'body': json.dumps({'Bad Request'})
                 }).with_security_headers()
 
             zoom_event_type, detail = zoom_data['event'].split('.')
@@ -75,5 +79,11 @@ class ZoomEventHandler(object):
             if failed:
                 return Response({
                     'statusCode': 400,
-                    'body': json.dumps({'error': 'Bad Request'})
+                    'body': json.dumps({'Bad Request'})
+                }).with_security_headers()
+            else:
+                self.send_to_mozdef(valid_event)
+                return Response({
+                    'statusCode': 200,
+                    'body': json.dumps({'Event received'})
                 }).with_security_headers()
