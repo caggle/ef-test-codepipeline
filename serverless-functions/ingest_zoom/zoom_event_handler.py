@@ -3,13 +3,14 @@ import json
 import logging
 import os
 from response import Response
-from event.aws_event import AWSEvent
-from event.zoom_account_event import ZoomAccountEvent
-from event.zoom_meeting_event import ZoomMeetingEvent
-from event.zoom_recording_event import ZoomRecordingEvent
-from event.zoom_rooms_event import ZoomRoomsEvent
-from event.zoom_user_event import ZoomUserEvent
-from event.zoom_webinar_event import ZoomWebinarEvent
+from event.aws.aws_event import AWSEvent
+from event.zoom.zoom_account_event import ZoomAccountEvent
+from event.zoom.zoom_meeting_event import ZoomMeetingEvent
+from event.zoom.zoom_recording_event import ZoomRecordingEvent
+from event.zoom.zoom_rooms_event import ZoomRoomsEvent
+from event.zoom.zoom_user_event import ZoomUserEvent
+from event.zoom.zoom_webinar_event import ZoomWebinarEvent
+from event.zoom.zoom_event import ZoomEvent
 
 REGION = os.getenv('REGION', 'us-west-2')
 sqs = boto3.client('sqs', region_name=REGION)
@@ -62,7 +63,7 @@ class ZoomEventHandler(object):
             elif "user" in zoom_event_type:
                 # Create Zoom User Event object
                 try:
-                    valid_event = ZoomUserEvent(zoom_data, self.logger)
+                    valid_event = ZoomUserEvent(zoom_data, event_sub_type=zoom_data['event'], logger=self.logger)
                 except Exception:
                     # Add to DLQ here
                     failed = True

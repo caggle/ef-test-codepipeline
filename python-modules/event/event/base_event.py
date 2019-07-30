@@ -11,5 +11,5 @@ class BaseEvent(ABC):
         super().__init__()
 
     @abstractmethod
-    def parse(self):
+    def validate(self):
         pass

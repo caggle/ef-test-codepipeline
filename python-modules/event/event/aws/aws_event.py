@@ -7,7 +7,7 @@ class AWSEvent(BaseEvent):
     def __init__(self, event=None, context=None, event_type="api-gw", logger=logging.getLogger(__name__)):
         super().__init__()
 
-    def parse(self):
+    def validate(self):
         try:
             json.loads(self.event['body'])
         except Exception as e:

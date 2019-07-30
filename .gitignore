@@ -22,8 +22,6 @@ var/
 # Ignore caches
 .pytest_cache/
 
-schemas/
-
 *.pyc
 *.pyo
 

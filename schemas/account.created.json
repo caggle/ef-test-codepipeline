@@ -1,0 +1,33 @@
+{
+    "type": "object",
+    "properties": {
+      "event": {
+        "type": "string"
+      },
+      "payload": {
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "type": "string"
+          },
+          "operator": {
+            "type": "string"
+          },
+          "object": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "owner_id": {
+                "type": "string"
+              },
+              "owner_email": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
