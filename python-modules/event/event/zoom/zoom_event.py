@@ -14,17 +14,6 @@ class ZoomEvent(BaseEvent):
         assert self.validate()
         super().__init__()
 
-    # For comparison purposes
-    # def __init__(self, event=None, context=None, event_type="zoom", event_sub_type=None, logger=logging.getLogger(__name__)):
-    #     self.event = event                      # Full Zoom event
-    #     self.mozdef_message = None              # Message intended for MozDef's consumption
-    #     self.zoom_event = None                  # Actual Zoom "event" field
-    #     self.zoom_event_type = event_sub_type   # Zoom event sub-type in event field
-    #     self.payload = None                     # Zoom event payload structure
-    #     self.payload_object = None              # Zoom event payload details
-    #     assert self.parse()
-    #     super().__init__()
-
     def validate(self):
         # Try to load schema. We can consider loading this
         # from somewhere else, maybe from an S3 bucket that

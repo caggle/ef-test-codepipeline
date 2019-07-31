@@ -1,12 +1,15 @@
 import logging
 import json
-from event import BaseEvent
+from event.zoom import ZoomEvent
 
 
-class ZoomRecordingEvent(BaseEvent):
-    def __init__(self, event=None, context=None, logger=logging.getLogger(__name__)):
+class ZoomRecordingEvent(ZoomEvent):
+    def __init__(self, event=None, context=None, zoom_event_type=None, logger=logging.getLogger(__name__)):
+        self.mozdef_message = {}
         super().__init__()
 
-    def parse(self):
+    def validate(self):
+        super.validate()
 
+    def parse(self):
         return True

@@ -1,13 +1,11 @@
 import logging
 import json
-from event import ZoomEvent
-from event.zoom.schemas.zoom_user_schemas import USER_CREATED
+from event.zoom import ZoomEvent
 
 
 class ZoomUserEvent(ZoomEvent):
     def __init__(self, event=None, context=None, zoom_event_type=None, logger=logging.getLogger(__name__)):
         self.mozdef_message = {}
-        self.schema = USER_CREATED
         super().__init__()
 
     def validate(self):
