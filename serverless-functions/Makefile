@@ -62,7 +62,10 @@ layer-codebuild:
 	cd /tmp/build && zip -r /tmp/mozdef-ef.zip .
 	aws lambda publish-layer-version \
 	--layer-name $(LAYER_NAME)_$(STAGE) --compatible-runtimes python3.7 \
-	--zip-file fileb:///tmp/mozdef-ef.zip
+	--zip-file fileb:///tmp/mozdef-ef.zip | \
+	jq .LayerVersionArn | xargs -n 1 aws ssm put-parameter \
+	--name /mozdef-event-framework/$(STAGE)/lambda_layer_arn \
+	--overwrite --type String --value
 	
 
 .PHONY:deploy-ingest-zoom
