@@ -6,9 +6,7 @@ phases:
       python: 3.7
       nodejs: 10
     commands:
-      - sleep 1
+      - npm -g install serverless
   build:
     commands:
-      - echo $AWS_ACCESS_KEY_ID 1>&2
-      - aws sts get-caller-identity
-      - ls ~/.aws/ 
+      - make build STAGE=qa

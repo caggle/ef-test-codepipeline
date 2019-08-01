@@ -62,9 +62,7 @@ layer-codebuild:
 	cd /tmp/build && zip -r /tmp/mozdef-ef.zip . && \
 	aws lambda publish-layer-version \
 	--layer-name $(LAYER_NAME)_$(STAGE) --compatible-runtimes python3.7 \
-	--zip-file fileb:///tmp/mozdef-ef.zip && \
-	aws ssm put-parameter --name "/mozdef-event-framework/ZOOM_AUTH_TOKEN" \
-	--value $(ZOOM_TOKEN) --type SecureString --overwrite
+	--zip-file fileb:///tmp/mozdef-ef.zip
 	
 
 .PHONY:deploy-ingest-zoom
