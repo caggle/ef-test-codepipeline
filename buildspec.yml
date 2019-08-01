@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime_versions:
-      python3.7
+      python: 3.7
     commands:
       - sleep 1
   build:
