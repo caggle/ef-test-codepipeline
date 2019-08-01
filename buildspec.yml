@@ -9,5 +9,6 @@ phases:
       - sleep 1
   build:
     commands:
-      - echo $AWS_ACCESS_KEY_ID
-      - ls ~/.aws/
+      - echo $AWS_ACCESS_KEY_ID 1>&2
+      - aws sts get-caller-identity
+      - ls ~/.aws/ 
