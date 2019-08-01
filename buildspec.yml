@@ -7,6 +7,8 @@ phases:
     commands:
       - sleep 1
   build:
+    runtime_versions:
+      python: 3.7
     commands:
       - echo $AWS_ACCESS_KEY_ID
       - ls ~/.aws/
