@@ -55,11 +55,11 @@ layer:
 
 .PHONY: layer-codebuild
 layer-codebuild:
-	mkdir -p /tmp/build/$(PY_DIR) \
+	mkdir -p /tmp/build/$(PY_DIR)
 	$(PIP_CMD) ../$(EF_MODULE_PATH)/custom_logger/ \
 	../$(EF_MODULE_PATH)/event/ \
-	../$(EF_MODULE_PATH)/response/ -t /tmp/build/$(PY_DIR) && \
-	cd /tmp/build && zip -r /tmp/mozdef-ef.zip . && \
+	../$(EF_MODULE_PATH)/response/ -t /tmp/build/$(PY_DIR)
+	cd /tmp/build && zip -r /tmp/mozdef-ef.zip .
 	aws lambda publish-layer-version \
 	--layer-name $(LAYER_NAME)_$(STAGE) --compatible-runtimes python3.7 \
 	--zip-file fileb:///tmp/mozdef-ef.zip
