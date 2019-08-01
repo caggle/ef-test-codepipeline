@@ -18,20 +18,7 @@ var/
 
 # Serverless directories
 .serverless
-
-# Ignore caches
-.pytest_cache/
-
-*.pyc
-*.pyo
-
-.DS_Store
-
-node_modules
 package-lock.json
-.vscode/
+node_modules
 
-# Sphinx stuff
-_build
-_static
-_templates
+.vscode/

@@ -1,0 +1,24 @@
+{
+  "requestBody": {
+  "event": "meeting.participant_joined",
+  "payload": {
+    "account_id": "TEST_ACCOUNT_ID",
+    "object": {
+      "duration": 30,
+      "start_time": "2019-07-02T16:16:29Z",
+      "timezone": "America/New_York",
+      "topic": "Joe/Tushar/Kathryn - Revenue Ideas",
+      "id": "TEST_MEETING_ID",
+      "type": 2,
+      "uuid": "TEST_UUID",
+      "host_id": "TEST_HOST_ID",
+      "participant": {
+        "user_id": "TEST_USER_ID",
+        "user_name": "Joe Tuckman",
+        "id": "",
+          "join_time": "2019-07-02T16:19:04Z"
+      }
+    }
+  }
+}
+}

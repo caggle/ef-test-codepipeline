@@ -1,0 +1,29 @@
+{
+  "name": "mozdef_aws_event_framework",
+  "version": "1.0.0",
+  "description": "Serverless aws to mozdef event framework",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-domain-manager": "^3.2.6",
+    "serverless-prune-plugin": "^1.3.2",
+    "serverless-pseudo-parameters": "^2.4.0",
+    "serverless-python-requirements": "^4.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mozilla/mozdef_aws_event_framework_template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mozilla/mozdef_aws_event_framework_template/issues"
+  },
+  "homepage": "https://github.com/mozilla/mozdef_aws_event_framework_template#readme"
+}
