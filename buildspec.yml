@@ -4,13 +4,10 @@ phases:
   install:
     runtime_versions:
       python: 3.7
+      nodejs: 10
     commands:
       - sleep 1
   build:
-    runtime_versions:
-      python: 3.7
     commands:
       - echo $AWS_ACCESS_KEY_ID
       - ls ~/.aws/
-#      - mkdir -p serverless-functions/build/python/lib/python3.7/site-packages
-#      - bash deploy.sh
