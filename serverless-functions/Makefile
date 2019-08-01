@@ -55,7 +55,7 @@ layer:
 
 .PHONY: layer-codebuild
 layer-codebuild:
-	mkdir -p /tmp/build/$(PYDIR)
+	mkdir -p /tmp/build/$(PY_DIR)
 	$(PIP_CMD) ../$(EF_MODULE_PATH)/custom_logger/ \
 	../$(EF_MODULE_PATH)/event/ \
 	../$(EF_MODULE_PATH)/response/ \
