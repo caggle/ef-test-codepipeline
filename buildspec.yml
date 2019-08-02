@@ -12,7 +12,6 @@ phases:
     commands:
       - echo "CODEBUILD_WEBHOOK_TRIGGER - $CODEBUILD_WEBHOOK_TRIGGER"
       - echo "CODEBUILD_WEBHOOK_EVENT - $CODEBUILD_WEBHOOK_EVENT"
-      - echo "PYDIR - $PYDIR"
   build:
     commands:
       - mkdir -p serverless-functions/build/python/lib/python3.7/site-packages

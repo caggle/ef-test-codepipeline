@@ -48,9 +48,7 @@ layer:
 	zip -r /var/task/serverless-functions/mozdef-ef.zip /var/task/serverless-functions/build/ && \
 	aws lambda publish-layer-version \
 	--layer-name $(LAYER_NAME)_$(STAGE) --compatible-runtimes python3.7 \
-	--zip-file fileb:///var/task/serverless-functions/mozdef-ef.zip && \
-	aws ssm put-parameter --name "/mozdef-event-framework/ZOOM_AUTH_TOKEN" \
-	--value $(ZOOM_TOKEN) --type SecureString --overwrite
+	--zip-file fileb:///var/task/serverless-functions/mozdef-ef.zip
 
 
 .PHONY: layer-codebuild
@@ -59,6 +57,7 @@ layer-codebuild:
 	$(PIP_CMD) ../$(EF_MODULE_PATH)/custom_logger/ \
 	../$(EF_MODULE_PATH)/event/ \
 	../$(EF_MODULE_PATH)/response/ -t /tmp/build/$(PY_DIR) && \
+	ls -la $(ROOT_DIR) && \
 	cd /tmp/build && zip -r /tmp/mozdef-ef.zip .
 	aws lambda publish-layer-version \
 	--layer-name $(LAYER_NAME)_$(STAGE) --compatible-runtimes python3.7 \
