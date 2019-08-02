@@ -11,6 +11,8 @@ phases:
   pre_build:
     commands:
       - echo "CODEBUILD_WEBHOOK_TRIGGER - $CODEBUILD_WEBHOOK_TRIGGER"
+      - echo "CODEBUILD_WEBHOOK_EVENT - $CODEBUILD_WEBHOOK_EVENT"
+      - echo "CODEBUILD_WEBHOOK_BASE_REF - $CODEBUILD_WEBHOOK_BASE_REF"
   build:
     commands:
       - mkdir -p serverless-functions/build/python/lib/python3.6/site-packages
