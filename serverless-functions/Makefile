@@ -69,7 +69,7 @@ layer-codebuild:
 
 .PHONY:deploy-ingest-zoom
 deploy-ingest-zoom:
-	cd $(ROOT_DIR)/ingest-zoom && \
+	cd $(ROOT_DIR)/ingest_zoom && \
 	npm install serverless-pseudo-parameters --save-dev && \
 	npm install serverless-prune-plugin --save-dev && \
 	sls deploy --region $(AWS_REGION) --stage $(STAGE)
