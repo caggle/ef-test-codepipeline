@@ -8,6 +8,9 @@ phases:
     commands:
       - npm -g install serverless
       - apt-get install -y jq
+  pre_build:
+    commands:
+      - echo "CODEBUILD_WEBHOOK_TRIGGER - $CODEBUILD_WEBHOOK_TRIGGER"
   build:
     commands:
       - mkdir -p serverless-functions/build/python/lib/python3.6/site-packages
