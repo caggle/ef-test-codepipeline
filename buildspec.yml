@@ -10,4 +10,5 @@ phases:
       - apt-get install -y jq
   build:
     commands:
-      - make build STAGE=qa
+      - mkdir -p serverless-functions/build/python/lib/python3.6/site-packages
+      - bash deploy.sh

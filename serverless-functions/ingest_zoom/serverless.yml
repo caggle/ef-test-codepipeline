@@ -22,7 +22,7 @@ custom:
 provider:
   name: aws
   runtime: python3.7
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'qa'}
   region: ${opt:region, 'us-west-2'}
   endpointType: REGIONAL
   tracing:
@@ -71,6 +71,7 @@ package:
 functions:
   custom_authorizer: 
     handler: authorizer.validate_token
+    layers: ${ssm:/mozdef-event-framework/${self:provider.stage}/lambda_layer_arn}
   zoom_event_handler:
     handler: handler.lambda_handler
     description: Lambda for handling Zoom webhook requests
@@ -80,6 +81,7 @@ functions:
           method: ${self:custom.cfg.api_method}
           cors: true
           authorizer: ${self:custom.authorizer.validate_token}
+    layers: ${ssm:/mozdef-event-framework/${self:provider.stage}/lambda_layer_arn}
 resources:
   Resources:
     RestApi:
