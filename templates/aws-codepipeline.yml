@@ -62,6 +62,11 @@ Parameters:
     Default:  GitHub OAuth Token Here
     Description:  CodePipeline requires an OAuthToken
 
+  MergeLambdaParameter:
+    Type: String
+    Default: config
+    Description: Directory for private configuration files
+
 Resources:
 
   CloudWatchCodeCommitEventRole:
@@ -325,7 +330,7 @@ Resources:
       TimeoutInMinutes: 5
       Source:
         Type: CODEPIPELINE
-        BuildSpec: !Join [ "./config/", ["buildspec", "-", !Ref 'Environment', ".yml"]]
+        BuildSpec: !Join [ "", [!Ref 'MergeLambdaParameter', "/", "buildspec", "-", !Ref 'Environment', ".yml"]]
       Environment:
         Type: "LINUX_CONTAINER"
         ComputeType: BUILD_GENERAL1_SMALL
@@ -417,7 +422,7 @@ Resources:
                 Provider: Lambda
               Configuration:
                 FunctionName: !Ref MergeLambda
-                UserParameters: "config"
+                UserParameters: !Ref MergeLambdaParameter
               InputArtifacts:
                 - Name: CodeSourceOutput
                 - Name: ConfigSourceOutput
