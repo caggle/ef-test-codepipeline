@@ -1,4 +1,4 @@
-service: zoom2mozdef-ingestion-service
+service: ${env:SERVICE, 'zoom2mozdef-ingestion-service'}
 plugins:
   - serverless-pseudo-parameters
   - serverless-prune-plugin
@@ -8,7 +8,7 @@ custom: ${file(./config/customVars.yml)}
 provider:
   name: aws
   runtime: python3.7
-  stage: ${opt:stage, 'dev'}
+  stage: ${env:STAGE, 'dev'}
   region: ${opt:region, 'us-west-2'}
   endpointType: REGIONAL
   tracing:
