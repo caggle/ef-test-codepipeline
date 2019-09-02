@@ -2,27 +2,13 @@ service: zoom2mozdef-ingestion-service
 plugins:
   - serverless-pseudo-parameters
   - serverless-prune-plugin
-custom:
-  authorizer:
-    validate_token:
-      name: custom_authorizer
-      type: token
-      identitySource: method.request.header.Authorization
-      identityValidationExpression: '.*'
-  cfg:
-    # These are not final values
-    resource_name: zoom2mozdef
-    api_method: POST
-    api_path: zoom
-    ssmZoomToken: mozdef-event-framework/ZOOM_AUTH_TOKEN
-    project: MozDef
-  prune:
-    automatic: true
-    number: 5
+  - serverless-prune-plugin
+  - '@anttiviljami/serverless-stack-output'
+custom: ${file(./config/customVars.yml)}
 provider:
   name: aws
   runtime: python3.7
-  stage: ${opt:stage, 'qa'}
+  stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-west-2'}
   endpointType: REGIONAL
   tracing:
