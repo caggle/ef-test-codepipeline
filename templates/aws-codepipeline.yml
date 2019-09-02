@@ -308,7 +308,7 @@ Resources:
       Description: "Lambda Function to merge artifacts in CodePipeline"
       Timeout: 30
       Handler: "merge.handler"
-      Runtime: "nodejs10"
+      Runtime: "nodejs10.x"
       MemorySize: 128
 
   TestBuild:
