@@ -33,6 +33,11 @@ Parameters:
   CodePipelineBucketPrefix:
     Description: CodePipeline needs a utility bucket for its internal use. Specify a unique prefix for the bucket name
     Type: String
+    Default: mozdef-ef-utility-bucket
+
+  LambdaBucketPrefix:
+    Description: An existing bucket which holds the merger lambda function.
+    Type: String
     Default: mozdef-utility-bucket
   
   CodeCommitRepository:
@@ -293,18 +298,16 @@ Resources:
   
   S3CodePipeline:
     Type: "AWS::S3::Bucket"
-    DeletionPolicy: Retain
     Properties:
       BucketName: !Join [ "", [!Ref CodePipelineBucketPrefix,  "-", !Ref 'AWS::StackName', !Ref 'Environment', "-", !Ref "AWS::Region"]]
   
   MergeLambda:
     Type: AWS::Lambda::Function
-    DependsOn: S3CodePipeline
     Properties:
       FunctionName:
         'Fn::Join': [ "", ["CodePipelineMergeLambda", "-", !Ref 'AWS::StackName', "-", !Ref 'Environment']]
       Code:
-        S3Bucket: !Join [ "", [!Ref CodePipelineBucketPrefix,  "-", !Ref 'AWS::StackName', !Ref 'Environment', "-", !Ref "AWS::Region"]]
+        S3Bucket: !Join [ "", [!Ref LambdaBucketPrefix,  "-", !Ref 'AWS::StackName', !Ref 'Environment', "-", !Ref "AWS::Region"]]
         S3Key: merge.zip
       Role: !GetAtt CodePipelineLambdaRole.Arn
       Description: "Lambda Function to merge artifacts in CodePipeline"
