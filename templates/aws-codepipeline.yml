@@ -325,7 +325,7 @@ Resources:
       TimeoutInMinutes: 5
       Source:
         Type: CODEPIPELINE
-        BuildSpec: !Join [ "", ["buildspec", "-", !Ref 'Environment', ".yml"]]
+        BuildSpec: !Join [ "./config/", ["buildspec", "-", !Ref 'Environment', ".yml"]]
       Environment:
         Type: "LINUX_CONTAINER"
         ComputeType: BUILD_GENERAL1_SMALL
@@ -342,6 +342,7 @@ Resources:
       TimeoutInMinutes: 5
       Source:
         Type: CODEPIPELINE
+        # The below line will likely change
         BuildSpec: !Sub |
             version: 0.2
             phases:
