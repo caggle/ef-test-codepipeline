@@ -231,6 +231,8 @@ Resources:
             - 'events:Remove*'
             - 'events:Delete*'
             - 'dynamodb:*'
+            - 'ssm:PutParameter'
+            - 'ssm:AddTagsToResource'
           Resource: "*"
       Roles:
         -  !Ref CodeBuildRole
