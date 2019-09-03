@@ -334,7 +334,7 @@ Resources:
       Environment:
         Type: "LINUX_CONTAINER"
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/standard:2.0
+        Image: aws/codebuild/ubuntu-base:14.04
       Artifacts:
         Type: CODEPIPELINE
 
@@ -361,7 +361,7 @@ Resources:
           - Name: env
             Type: PLAINTEXT
             Value: !Ref Environment
-        Image: aws/codebuild/standard:2.0
+        Image: aws/codebuild/ubuntu-base:14.04
       Artifacts:
         Type: CODEPIPELINE
 
