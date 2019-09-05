@@ -30,7 +30,7 @@ provider:
         - ssm:GetParametersByPath
       Resource:
         - "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${self:custom.cfg.authToken}"
-        - "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${env:SERVICE}/${env:STAGE}/${env:RESOURCE_NAME}/lambda_layer_arn}"
+        - "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${env:SERVICE}/${env:STAGE}/${env:RESOURCE_NAME}/lambda_layer_arn"
     - Effect: Allow
       Action: kms:Decrypt
       Resource:
