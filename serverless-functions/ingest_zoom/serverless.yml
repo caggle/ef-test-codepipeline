@@ -2,9 +2,8 @@ service: ${env:SERVICE, 'zoom2mozdef-ingestion-service'}
 plugins:
   - serverless-pseudo-parameters
   - serverless-prune-plugin
-  - serverless-prune-plugin
   - '@anttiviljami/serverless-stack-output'
-custom: ${file(./config/customVars.yml)}
+custom: ${file(../../config/customVars.yml)}
 provider:
   name: aws
   runtime: python3.7
