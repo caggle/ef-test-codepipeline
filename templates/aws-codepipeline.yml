@@ -210,6 +210,7 @@ Resources:
             - 'apigateway:POST'
             - 'apigateway:PUT'
             - 'apigateway:DELETE'
+            - 'apigateway:PATCH'
             - 's3:CreateBucket'
             - 's3:DeleteBucket'
             - 's3:ListBucket'
