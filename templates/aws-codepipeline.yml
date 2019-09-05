@@ -238,6 +238,9 @@ Resources:
             - 'ssm:GetParametersByPath'
             - 'ssm:AddTagsToResource'
             - 'sqs:CreateQueue'
+            - 'sqs:SendMessage'
+            - 'sqs:GetQueueAttributes'
+            - 'sqs:ListQueues'
           Resource: "*"
       Roles:
         -  !Ref CodeBuildRole
