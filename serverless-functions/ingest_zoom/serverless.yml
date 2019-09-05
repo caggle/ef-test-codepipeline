@@ -20,6 +20,11 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
+        - s3:PutEncryptionConfiguration
+        - s3:GetEncryptionConfiguration
+      Resource: "arn:aws:s3:#{AWS::Region}:#{AWS::AccountId}:*"
+    - Effect: Allow
+      Action:
         - sqs:SendMessage
         - sqs:GetQueueAttributes
         - sqs:ListQueues
