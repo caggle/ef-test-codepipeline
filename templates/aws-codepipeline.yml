@@ -234,6 +234,8 @@ Resources:
             - 'events:Delete*'
             - 'dynamodb:*'
             - 'ssm:PutParameter'
+            - 'ssm:GetParameter'
+            - 'ssm:GetParametersByPath'
             - 'ssm:AddTagsToResource'
             - 'sqs:CreateQueue'
           Resource: "*"
