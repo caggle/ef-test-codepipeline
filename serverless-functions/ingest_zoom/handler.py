@@ -7,6 +7,7 @@ import custom_logger
 from . zoom_event_handler import ZoomEventHandler
 
 REGION = os.getenv('REGION', 'us-west-2')
+SERVICE = os.getenv('SERVICE')
 sqs = boto3.client('sqs', region_name=REGION)
 
 
@@ -23,7 +24,7 @@ def setup_logging():
 
 def lambda_handler(event, context):
     logger = setup_logging()
-    logger.info("Zoom event ingestion service initialized.")
+    logger.info("{} is initialized.".format(SERVICE))
 
     zoom_event_handler = ZoomEventHandler(logger, region=REGION)
     handler_response = zoom_event_handler.process(event, context)

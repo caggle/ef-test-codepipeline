@@ -1,23 +1,24 @@
-service: ${env:SERVICE, 'zoom2mozdef-ingestion-service'}
+# Default values for env variables are not supported by serverless
+service: ${env:SERVICE}
 plugins:
   - serverless-pseudo-parameters
   - serverless-prune-plugin
 # custom: ${file(../../config/customVars.yml)}
 custom:
-  authorizer:  
-    validate_token:  
+  authorizer:
+    validate_token:
       name: custom_authorizer
       type: token
       identitySource: method.request.header.Authorization
       identityValidationExpression: '.*'
   cfg:
-    # Taking these values from buildspec.yml as environment 
-    # variables so they remain generic  
-    resource_name: ${env:RESOURCE_NAME, 'ZoomConnect'}
+    # Taking these values from buildspec.yml as environment
+    # variables so they remain generic
+    resource_name: ${env:RESOURCE_NAME}
     api_method: POST
-    api_path: zoom
+    api_path: ${env:API_PATH}
     authToken: ${env:SERVICE}/${env:STAGE}/${env:RESOURCE_NAME}/auth_token
-    project: ${env:PROJECT, 'MozDef'}
+    project: 'MozDef'
 pythonRequirements:  
   dockerizePip: true  
 prune:  
@@ -26,7 +27,7 @@ prune:
 provider:
   name: aws
   runtime: python3.7
-  stage: ${env:STAGE, 'dev'}
+  stage: ${env:STAGE}
   region: ${opt:region, 'us-west-2'}
   endpointType: REGIONAL
   tracing:
@@ -58,6 +59,7 @@ provider:
   # You can define service wide environment variables here
   environment:
     REGION: '#{AWS::Region}'
+    SERVICE: '${env:SERVICE}'
     # Adding resource queue URL as global environment variable
     # We could also store this in SSM
     SQS_URL:
@@ -77,9 +79,9 @@ functions:
   custom_authorizer: 
     handler: authorizer.validate_token
     layers: ${ssm:/${env:SERVICE}/${env:STAGE}/${env:RESOURCE_NAME}/lambda_layer_arn}
-  zoom_event_handler:
+  event_handler:
     handler: handler.lambda_handler
-    description: Lambda for handling Zoom webhook requests
+    description: Lambda for handling events from ${env:RESOURCE_NAME} resource.
     events:
       - http:
           path: ${self:custom.cfg.api_path}
