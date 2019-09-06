@@ -60,6 +60,8 @@ provider:
   environment:
     REGION: '#{AWS::Region}'
     SERVICE: '${env:SERVICE}'
+    STAGE: '${env:STAGE}'
+    RESOURCE_NAME: '${env:RESOURCE_NAME}'
     # Adding resource queue URL as global environment variable
     # We could also store this in SSM
     SQS_URL:
