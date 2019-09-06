@@ -2,7 +2,27 @@ service: ${env:SERVICE, 'zoom2mozdef-ingestion-service'}
 plugins:
   - serverless-pseudo-parameters
   - serverless-prune-plugin
-custom: ${file(../../config/customVars.yml)}
+# custom: ${file(../../config/customVars.yml)}
+custom:
+  authorizer:  
+    validate_token:  
+      name: custom_authorizer
+      type: token
+      identitySource: method.request.header.Authorization
+      identityValidationExpression: '.*'
+  cfg:
+    # Taking these values from buildspec.yml as environment 
+    # variables so they remain generic  
+    resource_name: ${env:RESOURCE_NAME, 'ZoomConnect'}
+    api_method: POST
+    api_path: zoom
+    authToken: ${env:SERVICE}/${env:STAGE}/${env:RESOURCE_NAME}/auth_token
+    project: ${env:PROJECT, 'MozDef'}
+pythonRequirements:  
+  dockerizePip: true  
+prune:  
+  automatic: true  
+  number: 5 
 provider:
   name: aws
   runtime: python3.7
