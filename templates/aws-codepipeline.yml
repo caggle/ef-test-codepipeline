@@ -350,33 +350,6 @@ Resources:
       Artifacts:
         Type: CODEPIPELINE
 
-  BuildDeploy:
-    Type: "AWS::CodeBuild::Project"
-    Properties:
-      Name: !Join ["", ["Build-Deploy",  "-", !Ref 'AWS::StackName'] ]
-      Description: Demo of CodeBuild with CodeDeploy pipeline.
-      ServiceRole: !Ref CodeBuildRole
-      TimeoutInMinutes: 5
-      Source:
-        Type: CODEPIPELINE
-        # The below line will likely change
-        BuildSpec: !Sub |
-            version: 0.2
-            phases:
-              build:
-                commands:
-                  - bash deploy.sh
-      Environment:
-        Type: "LINUX_CONTAINER"
-        ComputeType: BUILD_GENERAL1_SMALL
-        EnvironmentVariables:
-          - Name: env
-            Type: PLAINTEXT
-            Value: !Ref Environment
-        Image: aws/codebuild/standard:2.0
-      Artifacts:
-        Type: CODEPIPELINE
-
   # CodePipeline with its stages:
   Pipeline:
     Type: "AWS::CodePipeline::Pipeline"
