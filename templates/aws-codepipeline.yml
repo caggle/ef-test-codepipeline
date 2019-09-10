@@ -52,15 +52,22 @@ Parameters:
     Default: master
     ConstraintDescription: "Can contain only ASCII characters."
     
-  GitHubRepository:
+  # Testing webhook creation
+  GitHubSecret:
     Type: String
-    Default: caggle/ef-test-codepipeline/advanced
-    Description:  owner/repository/branch
-
+    NoEcho: true
   GitHubOAuthToken:
+    # Adding NoEcho to mask it with asterisks.
+    NoEcho: true
     Type: String
     Default:  GitHub OAuth Token Here
     Description:  CodePipeline requires an OAuthToken
+  GitHubRepository:
+    Type: String
+    # Default: caggle/ef-test-codepipeline/advanced
+    # Testing a public repo in an Org
+    Default: mozilla/mozdef_aws_event_framework_template/master
+    Description:  owner/repository/branch
 
   MergeLambdaParameter:
     Type: String
@@ -68,6 +75,21 @@ Parameters:
     Description: Directory for private configuration files
 
 Resources:
+
+  PipelineWebhook:
+    Type: AWS::CodePipeline::Webhook
+    Properties:
+      Authentication: GITHUB_HMAC
+      AuthenticationConfiguration:
+        SecretToken: !Ref GitHubSecret
+      Filters:
+        - JsonPath: "$.ref"
+          MatchEquals: refs/heads/{Branch}
+      TargetPipeline: !Ref Pipeline
+      TargetAction: CodeSource
+      Name: PipelineWebhook
+      TargetPipelineVersion: !GetAtt Pipeline.Version
+      RegisterWithThirdParty: true
 
   CloudWatchCodeCommitEventRole:
     Type: "AWS::IAM::Role"
@@ -389,7 +411,8 @@ Resources:
                 Owner: !Select [0, !Split [ "/" , !Ref GitHubRepository ]]
                 Repo: !Select [1, !Split [ "/" , !Ref GitHubRepository ]]
                 Branch: !Select [2, !Split [ "/" , !Ref GitHubRepository ]]
-                PollForSourceChanges: true
+                # PollForSourceChanges: true, testing adding webhook
+                PollForSourceChanges: false
                 OAuthToken: !Ref GitHubOAuthToken
               OutputArtifacts:
                 - Name: CodeSourceOutput
@@ -431,23 +454,6 @@ Resources:
                 ProjectName:  !Ref TestBuild
               OutputArtifacts:
                 - Name: Deploy-Ready
-
-        # Stage 4:  Build and Deploy using Serverless Framework
-        - Name: BuildDeploy
-          Actions:
-            - Name: !Join ["", ["BuildDeploy",  "-", !Ref 'AWS::StackName'] ]
-              RunOrder: 6
-              InputArtifacts:
-                - Name: Deploy-Ready
-              ActionTypeId:
-                Category: Build
-                Owner: AWS
-                Provider: CodeBuild
-                Version: 1
-              Configuration:
-                ProjectName:  !Ref BuildDeploy
-              OutputArtifacts:
-                - Name: Deploy-App
 
 Outputs:
   CodeBuild:
